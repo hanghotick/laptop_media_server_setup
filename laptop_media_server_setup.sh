@@ -49,7 +49,7 @@ install_casaos() {
   log INFO "Waiting for CasaOS to start..."
   sleep 10
 
-  # Install ARR services, qBittorrent, Twingate, Tinfoil Store via CasaOS CLI
+  # Install ARR services, qBittorrent, Twingate, Ownfoil via CasaOS CLI
   if command -v casaos-cli &>/dev/null; then
     log INFO "Installing media apps via CasaOS CLI..."
     casaos-cli app install radarr || log WARN "Failed to auto-install Radarr. Install manually from CasaOS App Store."
@@ -58,9 +58,10 @@ install_casaos() {
     casaos-cli app install prowlarr || log WARN "Failed to auto-install Prowlarr. Install manually from CasaOS App Store."
     casaos-cli app install qbittorrent || log WARN "Failed to auto-install qBittorrent. Install manually from CasaOS App Store."
     casaos-cli app install twingate || log WARN "Failed to auto-install Twingate. Install manually from CasaOS App Store."
-    casaos-cli app install tinfoil-store || log WARN "Failed to auto-install Tinfoil Store. Install manually from CasaOS App Store."
+    # Install Ownfoil (https://github.com/a1ex4/ownfoil) via CasaOS Docker App
+    casaos-cli app install https://raw.githubusercontent.com/a1ex4/ownfoil/main/ownfoil-casaos.json || log WARN "Failed to auto-install Ownfoil. Install manually from CasaOS App Store or Docker."
     true  # Ensure script continues even if any install fails
-    log INFO "Requested installation of ARR, qBittorrent, Twingate, and Tinfoil Store."
+    log INFO "Requested installation of ARR, qBittorrent, Twingate, and Ownfoil."
   else
     log WARN "CasaOS CLI not found. Please install apps from the CasaOS App Store Web UI."
   fi
@@ -141,8 +142,8 @@ setup_ufw() {
 print_guidance() {
   echo -e "\n\033[1;36m==== SETUP COMPLETE ===="
   echo "\nAccess CasaOS Web UI: http://<your-server-ip>:8181"
-  echo "\nThe following apps were requested for installation via CasaOS: Radarr, Sonarr, Lidarr, Prowlarr, qBittorrent, Twingate, Tinfoil Store."
-  echo "If any failed to install automatically, you can install them from the CasaOS App Store."
+  echo "\nThe following apps were requested for installation via CasaOS: Radarr, Sonarr, Lidarr, Prowlarr, qBittorrent, Twingate, Ownfoil."
+  echo "If any failed to install automatically, you can install them from the CasaOS App Store or add Ownfoil from https://github.com/a1ex4/ownfoil."
   echo "\nRecommended next steps:"
   echo "- (Optional) Set a static IP address for reliable access."
   echo "  See: https://ubuntu.com/server/docs/network-configuration"
